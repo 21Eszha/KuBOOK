@@ -1,0 +1,51 @@
+[
+    {
+        "title": "Vendor1",
+        "details": "Testing vendor details",
+        "imageUrl": "https://codropspz-tympanus.netdna-ssl.com/codrops/wp-content/uploads/2017/04/C304_ReactXP.png",//https://facebook.github.io/react/img/logo_og.png",
+        "categories": [
+            {
+                "title": "Sound",
+                "details": "Sound system"
+            },
+            {
+                "title": "House",
+                "details": "House services"
+            }
+        ]
+    },
+    {
+        "title": "Vendor2",
+        "details": "Testing vendor2 details",
+        "imageUrl": "https://cdn.filestackcontent.com/JUpq9aK6TjC0jUw7KB0K",
+        "categories": [
+            {
+                "title": "Stage",
+                "details": "Stage"
+            },
+            {
+                "title": "Proyektor",
+                "details": "Pinjem proyektor"
+            }
+        ]
+    },
+    {
+        "title": "Vendor3",
+        "details": "Testing vendor3 details",
+        "imageUrl": "https://www.novoda.com/blog/content/images/2016/06/reactive-nativingitup-png-800x600_q96.png",
+        "categories": [
+            {
+                "title": "Print",
+                "details": "Print"
+            },
+            {
+                "title": "Sablon",
+                "details": "Sablon services"
+            },
+            {
+                "title": "ATK",
+                "details": "Alat tulis"
+            }
+        ]
+    }
+]
