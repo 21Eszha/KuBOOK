@@ -37,12 +37,7 @@ class Home extends Component {
 		return (
 			<View style={[styles.container]}>
 				<StatusBar translucent={true} backgroundColor="#0003" />
-				{/* <View>
-                    <HeaderButton
-                        onPress={() => this.props.navigation.navigate('DrawerOpen')}
-                    />
-                    <Text style={{ alignSelf: 'center', top: -12, color: 'black', fontSize: 20 }}>Home</Text>
-                </View> */}
+
 				<FlatList
 					style={styles.content}
 					data={datas}

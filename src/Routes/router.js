@@ -23,11 +23,12 @@ import Login from '../screens/Login'
 import SignUp from '../screens/Signup'
 import Category from '../screens/Category'
 import ItemsList from '../screens/ItemsList'
+import Verify from '../screens/Verify'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const HomeStack = StackNavigator({
-	MainHome: {
+	Home: {
 		screen: Home,
 		navigationOptions: ({ navigation }) => ({
 			headerTitle: 'Home',
@@ -99,6 +100,9 @@ const MainStack = StackNavigator({
 	},
 	SignUp: {
 		screen: SignUp
+	},
+	Verify: {
+		screen: Verify
 	},
 	Home: {
 		screen: MainDrawer,

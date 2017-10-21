@@ -10,7 +10,8 @@ import {
 	Animated,
 	AsyncStorage,
 	Alert,
-	Keyboard
+	Keyboard,
+	ScrollView
 } from 'react-native';
 
 import {
@@ -43,27 +44,43 @@ export default class Login extends Component {
 		password: ''
 	}
 	async login(email, pass) {
-		
+
 		try {
 			await firebase.auth()
 				.signInWithEmailAndPassword(email, pass);
-	
+
 			console.log("Logged In!");
-	
+
 			// Navigate to the Home page
 			store.dispatch(login(true))
-			this.props.navigation.dispatch(resetAction)
+			//this.props.navigation.dispatch(resetAction)
 			AsyncStorage.setItem('isLogin', 'true').then(() => {
 				console.log('success')
 			}).catch(() => {
 				console.log('fail')
 			})
-	
+
 		} catch (error) {
 			Reactotron.log(error.toString())
 			Alert.alert('Attention', error.toString())
 		}
-	
+
+	}
+	async forgetPassword(){
+		try {
+			let user = firebase.auth()
+			user.sendPasswordResetEmail(this.state.userName).then(()=>{
+				Reactotron.log('Email Send')
+				Alert.alert('Attention', 'Email Send')
+			}).catch((e)=>{
+				Reactotron.log(e.toString())
+				Alert.alert('Attention', err.toString())
+			})
+		} catch (err) {
+			Reactotron.log(err.toString())
+			Alert.alert('Attention', err.toString())
+		}
+			
 	}
 	componentWillMount() {
 		this._animateIsTrans = new Animated.Value(0)
@@ -82,69 +99,71 @@ export default class Login extends Component {
 			})
 		}
 		return (
-			<Animated.View style={[styles.container/**, {transform: [{translateX: animStyle.slide}]}*/]}>
-				<StatusBar backgroundColor="white" barStyle="dark-content" translucent={true} />
-				<View style={styles.logo}>
-					<Text style={styles.logo_text}>
-						KuBOOK
+			<ScrollView scrollEnabled={false} style={{flex: 1, backgroundColor: 'white'}}>
+				<Animated.View style={[styles.container/**, {transform: [{translateX: animStyle.slide}]}*/]}>
+					<StatusBar backgroundColor="white" barStyle="dark-content" translucent={true} />
+					<View style={styles.logo}>
+						<Text style={styles.logo_text}>
+							KuBOOK
                     </Text>
-				</View>
-				<View style={styles.content}>
-					<FloatInput
-						label="Email"
-						backgroundColor="transparent"
-						borderColor="black"
-						textColor="black"
-						width={200}
-						height={60}
-						onChangeText={(value) => this.setState({userName: value})}
-					/>
-					<FloatInput
-						label="Password"
-						secure={true}
-						backgroundColor="transparent"
-						borderColor="black"
-						textColor="black"
-						width={200}
-						height={60}
-						onChangeText={(value) => this.setState({password: value})}
-					/>
-					<TouchableNativeFeedback
-						onPress={() => console.log('test')}
-						background={TouchableNativeFeedback.Ripple('black', false)}
-					>
-						<View style={{ alignSelf: 'flex-end', height: 22, marginBottom: 10 }}>
-							<Text style={{ color: '#47525E' }}>
-								Forget Password
+					</View>
+					<View style={styles.content}>
+						<FloatInput
+							label="Email"
+							backgroundColor="transparent"
+							borderColor="black"
+							textColor="black"
+							width={200}
+							height={60}
+							onChangeText={(value) => this.setState({ userName: value })}
+						/>
+						<FloatInput
+							label="Password"
+							secure={true}
+							backgroundColor="transparent"
+							borderColor="black"
+							textColor="black"
+							width={200}
+							height={60}
+							onChangeText={(value) => this.setState({ password: value })}
+						/>
+						<TouchableNativeFeedback
+							onPress={() => this.forgetPassword()}
+							background={TouchableNativeFeedback.Ripple('black', false)}
+						>
+							<View style={{ alignSelf: 'flex-end', height: 22, marginBottom: 10 }}>
+								<Text style={{ color: '#47525E' }}>
+									Forget Password
                             </Text>
-						</View>
-					</TouchableNativeFeedback>
-					<TouchableNativeFeedback
-						onPress={() => {
-							//Reactotron.log(this.state.userName, this.state.password)
-							this.login(this.state.userName, this.state.password)
-							Keyboard.dismiss()
-						}}
-						background={TouchableNativeFeedback.Ripple('white', false)}
-					>
-						<View style={styles.button}>
-							<Text style={{ color: 'white', fontWeight: 'bold' }}>
-								LOGIN
+							</View>
+						</TouchableNativeFeedback>
+						<TouchableNativeFeedback
+							onPress={() => {
+								//Reactotron.log(this.state.userName, this.state.password)
+								this.login(this.state.userName, this.state.password)
+								Keyboard.dismiss()
+							}}
+							background={TouchableNativeFeedback.Ripple('white', false)}
+						>
+							<View style={styles.button}>
+								<Text style={{ color: 'white', fontWeight: 'bold' }}>
+									LOGIN
                             </Text>
-						</View>
-					</TouchableNativeFeedback>
-					<TouchableNativeFeedback
-						onPress={() => this.props.navigation.navigate('SignUp')}
-						background={TouchableNativeFeedback.Ripple('black', false)}
-					>
-						<View style={{ alignSelf: 'center', height: 22, marginTop: 15 }}>
-							<Text style={{ color: '#47525E' }}>
-								Daftar
+							</View>
+						</TouchableNativeFeedback>
+						<TouchableNativeFeedback
+							onPress={() => this.props.navigation.navigate('SignUp')}
+							background={TouchableNativeFeedback.Ripple('black', true)}
+						>
+							<View style={{ alignSelf: 'center', height: 22, marginTop: 15 }}>
+								<Text style={{ color: '#47525E' }}>
+									Daftar
                             </Text>
-						</View>
-					</TouchableNativeFeedback>
-				</View>
-			</Animated.View>
+							</View>
+						</TouchableNativeFeedback>
+					</View>
+				</Animated.View>
+			</ScrollView>
 		);
 	}
 }

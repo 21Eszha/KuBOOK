@@ -34,6 +34,14 @@ const resetAction2 = NavigationActions.reset({
 		})
 	]
 })
+const resetAction0 = NavigationActions.reset({
+	index: 0,
+	actions: [
+		NavigationActions.navigate({
+			routeName: "Verify"
+		})
+	]
+})
 class Loading extends Component {
 	constructor() {
 		super();
@@ -43,57 +51,41 @@ class Loading extends Component {
 		this._animateIsTrans2 = new Animated.Value(0)
 		this._animateIsTrans3 = new Animated.Value(0)
 		this._animateIsTrans4 = new Animated.Value(0)
+		store.dispatch(storeLoginNavigator(this.props.navigation))
 	}
-	// componentDidMount() {
-	// 	store.dispatch(storeLoginNavigator(this.props.navigation))
-	// 	this.animate1()
-	// 	setTimeout(() => this.animate2(), 10)
-	// 	setTimeout(() => this.animate3(), 50)
-	// 	setTimeout(() => this.animate4(), 100)
-	// 	try {
-	// 		AsyncStorage.getItem('isLogin', (err, result) => {
-	// 			console.log(result, err)
-	// 			if (result == 'true') {
-	// 				setTimeout(() => {
-	// 					this.props.loading(false)
-	// 					this.props.loginNavigator.dispatch(resetAction1)
-	// 				}, 1500)
-	// 			}
-	// 			else {
-	// 				setTimeout(() => {
-	// 					this.props.loading(false)
-	// 					this.props.loginNavigator.dispatch(resetAction2)
-	// 				}, 1500)
-	// 			}
-	// 		}).catch((err) => { })
-	// 	} catch (error) {
-	// 		// Error retrieving data
-	// 	}
-	// }
 
 	async componentDidMount() {
-		store.dispatch(storeLoginNavigator(this.props.navigation))
+		//store.dispatch(storeLoginNavigator(this.props.navigation))
 		this.animate1()
 		setTimeout(() => this.animate2(), 10)
 		setTimeout(() => this.animate3(), 50)
 		setTimeout(() => this.animate4(), 100)
-
 		try {
 
-			// Get User Credentials
-			let user = await firebase.auth().currentUser
-			Reactotron.log('this',user)
-			if (user) {
-				setTimeout(() => {
-					this.props.loading(false)
-					this.props.loginNavigator.dispatch(resetAction1)
-				}, 1500)
-			} else {
-				setTimeout(() => {
-					this.props.loading(false)
-					this.props.loginNavigator.dispatch(resetAction2)
-				}, 1500)
-			}
+			firebase.auth().onAuthStateChanged((user) => {
+				Reactotron.log(user != null ? user.emailVerified : null)
+				if (user) {
+					if (user.emailVerified == false) {
+						this.props.loginNavigator.dispatch(resetAction0)
+					} else if (user.emailVerified == true) {
+
+						this.props.loading(true)
+						//this.props.loginNavigator.navigate('Splash')
+						setTimeout(() => {
+							this.props.loading(false)
+							this.props.loginNavigator.dispatch(resetAction1)
+						}, 1500)
+					}
+
+				} else {
+					this.props.loading(true)
+					//this.props.loginNavigator.navigate('Splash')
+					setTimeout(() => {
+						this.props.loading(false)
+						this.props.loginNavigator.dispatch(resetAction2)
+					}, 1500)
+				}
+			})
 
 
 		} catch (error) {
@@ -183,9 +175,9 @@ const styles = StyleSheet.create({
 	}
 })
 
-function mapStateToProps({ loginNavigator }) {
+function mapStateToProps(state) {
 	return {
-		loginNavigator: loginNavigator
+		loginNavigator: state.loginNavigator
 	}
 }
 
